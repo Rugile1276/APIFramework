@@ -40,7 +40,9 @@ public class StepDefinitions extends Utils {
 		if(method.equalsIgnoreCase("POST"))
 			response = res.when().post(resourceAPI.getResource());
 		else if(method.equalsIgnoreCase("GET"))
-			response = res.when().get(resourceAPI.getResource());
+			response = res.when().log().all().get(resourceAPI.getResource());
+		else if(method.equalsIgnoreCase("PUT"))
+			response = res.when().log().all().put(resourceAPI.getResource());
 			
 	}
     
@@ -71,4 +73,16 @@ public class StepDefinitions extends Utils {
     	res = given().spec(requestSpecification()).
     			body(data.deletePlacePayload(place_id));
     }
+    
+    @Given("Get parameters")
+    public void get_payload() throws IOException {
+        res = given().spec(requestSpecification()).
+        		queryParam("place_id", place_id);
+    }
+    
+    @Given("Update Place Payload with {string}")
+    public void update_place_payload_with(String address) throws IOException {
+        res = given().spec(requestSpecification()).body(data.updatePlacePayload(place_id, address));
+    }
+    
 }
